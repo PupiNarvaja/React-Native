@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity, Modal } from "react-native";
-import { AddItem, CustomModal } from "./components/index";
-import ItemList from "./components/ItemList/ItemList";
+import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { AddItem, CustomModal, ItemList, Item } from "./components/index";
 
 export default function App() {
   const [searchValue, setSearchValue] = useState("");
@@ -21,28 +20,23 @@ export default function App() {
     ]);
     setSearchValue("");
   };
+  
+  const deleteItem = (id) => {
+    setItems(items.filter((item) => item.id != id));
+    setSelectedItem(null);
+    setOpenModal((prev) => !prev);
+  };
 
   const openDeleteModal = (id) => {
     setOpenModal((prev) => !prev);
     setSelectedItem(items.find((item) => item.id == id));
   };
   
-  const deleteItem = (id) => {
-    setItems(items.filter((item) => item.id != id));
-    setSelectedItem(null)
-    setOpenModal((prev) => !prev);
-  };
-
   const closeDeleteModal = () => setOpenModal((prev) => !prev);
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.item}>{item.value}</Text>
-      <TouchableOpacity onPress={() => openDeleteModal(item.id)}>
-        <Text style={styles.deleteBtn}>X</Text>
-      </TouchableOpacity>
-    </View>
-  )
+    <Item item={item} openDeleteModal={openDeleteModal} />
+  );
 
   return (
     <View style={styles.container}>
@@ -107,38 +101,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 20,
-  },
-
-
-
-  itemContainer: {
-    flex: 1,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 10,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-
-    elevation: 7,
-  },
-  item: {
-    color: "#212121",
-    fontSize: 16,
-  },
-  deleteBtn: {
-    color: "#212121",
-    fontSize: 18,
   },
 });
 
