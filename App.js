@@ -1,79 +1,46 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import { AddItem, CustomModal, ItemList, Item } from "./components/index";
+import { StyleSheet, Text, View, Button, TouchableOpacity, ActivityIndicator } from "react-native";
+import { useFonts } from "expo-font";
+
+import Header from "./components/header";
+import StartGame from "./screens/start-game";
+import OnGame from "./screens/on-game";
+import { colors } from "./consts/colors";
 
 export default function App() {
-  const [searchValue, setSearchValue] = useState("");
-  const [items, setItems] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [userNumber, setUserNumber] = useState(0);
+  const [loaded] = useFonts({
+    "Figtree-Regular": require("./assets/fonts/Figtree-Regular.ttf"),
+    "Figtree-Black": require("./assets/fonts/Figtree-Black.ttf"),
+    "Figtree-Bold": require("./assets/fonts/Figtree-Bold.ttf"),
+    "Figtree-Light": require("./assets/fonts/Figtree-Light.ttf"),
+  });
 
-  const handleSearch = (text) => setSearchValue(text);
+  const title = !userNumber ? "Guess a number" : "Let's start the game!"
 
-  const addItem = () => {
-    setItems((prevItems) => [ // Al usar el callback, se mantiene una copia fiel del estado previo.
-      ...prevItems,
-      {
-        id: Date.now(), // Encontrar un algoritmo más adecuado.
-        value: searchValue,
-      },
-    ]);
-    setSearchValue("");
-  };
-  
-  const deleteItem = (id) => {
-    setItems(items.filter((item) => item.id != id));
-    setSelectedItem(null);
-    setOpenModal((prev) => !prev);
-  };
+  const onStartGame = (selectedNumber) => {
+    setUserNumber(selectedNumber)
+  }
 
-  const openDeleteModal = (id) => {
-    setOpenModal((prev) => !prev);
-    setSelectedItem(items.find((item) => item.id == id));
-  };
-  
-  const closeDeleteModal = () => setOpenModal((prev) => !prev);
+  if (!loaded) {
+    return (
+      <View style={styles.containerLoaded}>
+        <ActivityIndicator  size="large" color={colors.PRIMARY_RED} />
+      </View>
+    )
+  }
 
-  const renderItem = ({ item }) => (
-    <Item item={item} openDeleteModal={openDeleteModal} />
-  );
+  let content = <StartGame onStartGame={onStartGame} />  
+
+  if (userNumber) {
+    content = <OnGame selectedNumber={userNumber} />
+  }
 
   return (
-    <View style={styles.container}>
-      <AddItem
-        item={searchValue}
-        title="Add"
-        onChangeText={handleSearch}
-        placeholder="New item"
-        addItem={addItem}
-        selectionColor="#d52b1e"
-        color="#d52b1e"
-      />
-      <ItemList
-        data={items}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-      <CustomModal visible={openModal} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Detalle de la lista</Text>
-        </View>
-        <View style={styles.modalMsg}>
-           <Text>¿Estas seguro de que quieres eliminar "{selectedItem?.value}"?</Text>
-        </View>
-        <View style={styles.actionBtns}>
-          <Button
-            title="Delete"
-            onPress={() => deleteItem(selectedItem?.id)}
-          />
-          <Button
-            title="Cancelar"
-            onPress={closeDeleteModal}
-          />
-        </View>
-      </CustomModal>
-    </View>
+    <>
+      <Header title={title} />
+      {content}   
+    </>
   );
 }
 
@@ -102,6 +69,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 20,
   },
+  containerLoaded: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
-
-// Render Item

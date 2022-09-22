@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../consts/colors";
 
 export const styles = StyleSheet.create({
   itemContainer: {
@@ -23,11 +24,11 @@ export const styles = StyleSheet.create({
     elevation: 7,
   },
   item: {
-    color: "#212121",
+    color: colors.TEXT,
     fontSize: 16,
   },
   deleteBtn: {
-    color: "#212121",
+    color: colors.TEXT,
     fontSize: 18,
   },
 });

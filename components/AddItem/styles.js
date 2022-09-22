@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../../consts/colors";
 
 export const styles = StyleSheet.create({
   inputContainer: {
@@ -10,10 +11,10 @@ export const styles = StyleSheet.create({
   },
   input: {
     width: "75%",
-    borderBottomColor: "#d52b1e",
+    borderBottomColor: colors.PRIMARY_RED,
     borderBottomWidth: 2,
     height: 40,
-    color: "#212121",
+    color: colors.TEXT,
     fontSize: 16,
   },
 });
