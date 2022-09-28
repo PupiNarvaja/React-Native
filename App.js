@@ -5,10 +5,13 @@ import { useFonts } from "expo-font";
 import Header from "./components/header";
 import StartGame from "./screens/start-game";
 import OnGame from "./screens/on-game";
+import GameOver from "./screens/game-over";
 import { colors } from "./consts/colors";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState(0);
+  const [rounds, setRounds] = useState(0);
+
   const [loaded] = useFonts({
     "Figtree-Regular": require("./assets/fonts/Figtree-Regular.ttf"),
     "Figtree-Black": require("./assets/fonts/Figtree-Black.ttf"),
@@ -22,6 +25,15 @@ export default function App() {
     setUserNumber(selectedNumber)
   }
 
+  const onGameOver = (roundsNumber) => {
+    setRounds(roundsNumber)
+  }
+
+  const onRestart = () => {
+    setUserNumber(0)
+    setRounds(0)
+  }
+
   if (!loaded) {
     return (
       <View style={styles.containerLoaded}>
@@ -32,13 +44,17 @@ export default function App() {
 
   let content = <StartGame onStartGame={onStartGame} />  
 
-  if (userNumber) {
-    content = <OnGame selectedNumber={userNumber} />
+  if (userNumber && rounds <= 0) {
+    content = <OnGame selectedNumber={userNumber} onGameOver={onGameOver} />
+  }
+
+  if (rounds > 0) {
+    content = <GameOver rounds={rounds} userNumber={userNumber} onRestart={onRestart} />
   }
 
   return (
     <>
-      <Header title={title} />
+      <Header title={rounds > 0 ? "Game Over" : title} />
       {content}   
     </>
   );

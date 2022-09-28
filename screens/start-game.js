@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, Button, TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions } from 'react-native'
 import { colors } from '../consts/colors';
 import Input from '../components/Input/Input';
 import { useState } from 'react';
@@ -44,30 +44,34 @@ const StartGame = ({ onStartGame }) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.StartGame}>
-        <Text style={styles.title}>Start screen</Text>
-        <Text style={styles.title}>Choose a number</Text>
-        <View style={styles.inputContainer}>
-          {/*  ojo. Al ser custom component, no existe el autocompletado y puede haber errores de types. */}
-          <Input value={number} onChangeText={(text) => handleChangeText(text)} keyboardType="numeric" maxLength={2} blurOnSubmit={true} autoCapitalize="none" autoCorrect={false} />
+      <ScrollView>
+        <View style={styles.StartGame}>
+          <Text style={styles.title}>Start screen</Text>
+          <Text style={styles.title}>Choose a number</Text>
+          <View style={styles.inputContainer}>
+            {/*  ojo. Al ser custom component, no existe el autocompletado y puede haber errores de types. */}
+            <Input value={number} onChangeText={(text) => handleChangeText(text)} keyboardType="numeric" maxLength={2} blurOnSubmit={true} autoCapitalize="none" autoCorrect={false} />
+          </View>
+          <View style={styles.playBtns}>
+            <Button
+              title="Clear"
+              onPress={onReset}
+            />
+            <Button
+              title="Confirm"
+              onPress={onConfirm}
+            />
+          </View>
+          {confirmedOutput()}
         </View>
-        <View style={styles.playBtns}>
-          <Button
-            title="Clear"
-            onPress={onReset}
-          />
-          <Button
-            title="Confirm"
-            onPress={onConfirm}
-          />
-        </View>
-        {confirmedOutput()}
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   )
 }
 
 export default StartGame;
+
+const { height, width } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
   StartGame: {
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    width: 200,
+    width: width / 1.5,
   },
   inputContainer: {
     width: 90,
