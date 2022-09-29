@@ -15,8 +15,8 @@ export default Header;
 
 const styles = StyleSheet.create({
   header: {
-    height: 100,
-    marginTop: 80,
+    height: 50,
+    marginTop: 50,
     marginHorizontal: 30,
     alignItems: "center",
   },

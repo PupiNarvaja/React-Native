@@ -1,8 +1,30 @@
-import { Button, Text, StyleSheet, View } from "react-native"
+import { useState, useEffect } from "react";
+import { Button, Text, StyleSheet, View, Dimensions } from "react-native"
 
 const GameOver = ({ rounds, userNumber, onRestart }) => {
+  const [isPortrait, setIsPortrait] = useState(true);
+
+  const onPortrait = () => {
+    const dimension = Dimensions.get("screen")
+    return dimension.height >= dimension.width
+  }
+
+  const statePortrait = () => {
+    setIsPortrait(onPortrait)
+  }
+
+  useEffect(() => {
+    Dimensions.addEventListener("change", statePortrait());
+
+    return () => {
+      Dimensions.removeEventListener("change", statePortrait());
+    };
+  });
+  
+  console.warn("Is portrait", isPortrait)
+
   return (
-    <View style={styles.screen}>
+    <View style={isPortrait ? styles.screen : styles.screenLandscape}>
       <Text>Yaaaaaaaaaaaay</Text>
       <View style={styles.resultContainer}>
         <Text>Trys: {rounds}</Text>
@@ -21,6 +43,13 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  screenLandscape: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderWidth: 1,
   },
   resultContainer: {
     marginBottom: 30,

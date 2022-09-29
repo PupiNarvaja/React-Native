@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    width: width / 1.5,
+    width: width / 2,
+    marginBottom: 40,
   },
   inputContainer: {
     width: 90,

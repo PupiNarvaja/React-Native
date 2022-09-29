@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, Button, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
 import { useFonts } from "expo-font";
 
 import Header from "./components/header";
@@ -36,9 +36,9 @@ export default function App() {
 
   if (!loaded) {
     return (
-      <View style={styles.containerLoaded}>
+      <SafeAreaView style={styles.containerLoaded}>
         <ActivityIndicator  size="large" color={colors.PRIMARY_RED} />
-      </View>
+      </SafeAreaView>
     )
   }
 
