@@ -11,4 +11,7 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.TITLE,
     color: colors.TEXT,
   },
+  containerList: {
+    flex: 1,
+  },
 });
