@@ -1,5 +1,5 @@
 import { FlatList } from "react-native";
-import CategoryItem from "../../components/category-item";
+import { CategoryItem } from "../../components";
 import { styles } from "./styles";
 import { categories } from "../../consts/data";
 
