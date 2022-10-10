@@ -2,6 +2,8 @@ import { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
 import { useFonts } from "expo-font";
 import { colors, fonts } from "./consts";
+import { Provider } from "react-redux";
+import store from "./store";
 import AppNavigator from "./navigation";
 
 export default function App() {
@@ -16,7 +18,9 @@ export default function App() {
   if (!loaded) return <ActivityIndicator />
 
   return (
-    <AppNavigator />
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 }
 
