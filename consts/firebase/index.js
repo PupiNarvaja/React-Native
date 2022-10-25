@@ -1,0 +1,1 @@
+export const API_URL = "https://firstmobileproject-ae719-default-rtdb.firebaseio.com/";
